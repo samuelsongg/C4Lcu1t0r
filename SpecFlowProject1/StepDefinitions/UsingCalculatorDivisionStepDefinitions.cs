@@ -6,37 +6,54 @@ namespace SpecFlowProject1.StepDefinitions
     [Binding]
     public class UsingCalculatorDivisionStepDefinitions
     {
-        private Calculator _calculator;
+        private readonly CommonSteps _commonSteps;
         private double _result;
+
+        public UsingCalculatorDivisionStepDefinitions(CommonSteps commonSteps)
+        {
+            _commonSteps = commonSteps;
+        }
 
         [When(@"I have entered (.*) and (.*) into the calculator")]
         public void WhenIHaveEnteredAndIntoTheCalculator(int p0, int p1)
         {
-            throw new PendingStepException();
+            // Retrieve the calculator from CommonSteps
+            var calculator = _commonSteps.GetCalculator();
+            _result = calculator.Divide(p0, p1);
         }
 
-        [Then(@"the division result should be a decimal (.*)")]
-        public void ThenTheDivisionResultShouldBe(Decimal p0)
+        [Then(@"the division result should be (.*)")]
+        public void ThenTheDivisionResultShouldBe(double expectedResult)
         {
-            throw new PendingStepException();
+            if (Math.Abs(_result - expectedResult) > 0.00001)
+            {
+                throw new Exception($"Expected result to be {expectedResult} but got {_result}");
+            }
         }
 
         [When(@"I have entered (.*) and (.*) into the calculator and press divide")]
         public void WhenIHaveEnteredAndIntoTheCalculatorAndPressDivide(int p0, int p1)
         {
-            throw new PendingStepException();
+            var calculator = _commonSteps.GetCalculator();
+            _result = calculator.Divide(p0, p1);
         }
 
         [Then(@"the division result should be an integer (.*)")]
-        public void ThenTheDivisionResultShouldBe(int p0)
+        public void ThenTheDivisionResultShouldBe(int expectedResult)
         {
-            throw new PendingStepException();
+            if ((int)_result != expectedResult)
+            {
+                throw new Exception($"Expected result to be {expectedResult} but got {_result}");
+            }
         }
 
         [Then(@"the division result equals positive_infinity")]
         public void ThenTheDivisionResultEqualsPositive_Infinity()
         {
-            throw new PendingStepException();
+            if (!double.IsPositiveInfinity(_result))
+            {
+                throw new Exception($"Expected result to be positive infinity but got {_result}");
+            }
         }
     }
 }
