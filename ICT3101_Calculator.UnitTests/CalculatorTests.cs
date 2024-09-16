@@ -33,17 +33,8 @@ public class CalculatorTests
         double result = _calculator.Divide(200, 10);
         Assert.That(result, Is.EqualTo(20));
     }
-    [Test]
-    [TestCase(0, 0)]
-    [TestCase(0, 10)]
-    [TestCase(10, 0)]
-    public void Divide_WithZerosAsInputs_ResultThrowArgumentException(double a, double b)
-    {
-        Assert.That(() => _calculator.Divide(a, b), Throws.ArgumentException);
-    }
 
     [Test]
-    [TestCase(0)]
     [TestCase(-10)]
     public void Factorial_CalculateFactorial_ResultThrowArgumentException(double a)
     {

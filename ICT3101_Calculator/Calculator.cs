@@ -1,7 +1,7 @@
 ﻿public class Calculator
 {
     public Calculator() { }
-    public double DoOperation(double num1, double num2, string op)
+    public double DoOperation(double num1, double num2, double num3, string op)
     {
         double result = double.NaN; // Default value
                                     // Use a switch statement to do the math.
@@ -34,6 +34,18 @@
                 break;
             case "2":
                 result = Qn17b(num1, num2);
+                break;
+            case "mtbf":
+                result = CalculateMTBF(num1, num2);
+                break;
+            case "availability":
+                result = CalculateAvailability(num1, num2);
+                break;
+            case "failureintensity":
+                result = CalculateFailureIntensity(num1, num2, num3);
+                break;
+            case "expectedfailures":
+                result = CalculateExpectedFailures(num1, num2, num3);
                 break;
             // Return text for an incorrect option entry.
             default:
@@ -151,4 +163,31 @@
             throw new ArgumentException(String.Format("Error encountered."));
         }
     }
+
+    // Calculate MTBF (Mean Time Between Failures)
+    public double CalculateMTBF(double mttf, double mttr)
+    {
+        return mttf + mttr;
+    }
+
+    // Calculate Availability (Availability = MTTF / (MTTF + MTTR))
+    public double CalculateAvailability(double mttf, double mttr)
+    {
+        double mtbf = CalculateMTBF(mttf, mttr);
+        return mttf / mtbf;
+    }
+
+    // Calculate the current failure intensity (λ(τ))
+    public double CalculateFailureIntensity(double initial_failure_intensity, double avg_failures, double ttl_failures)
+    {
+        return initial_failure_intensity * (1 - (avg_failures / ttl_failures));
+        return initial_failure_intensity * (1 - Math.Pow(Math.E, (avg_failures / ttl_failures)));
+    }
+
+    // Calculate the average number of expected failures (μ(τ))
+    public double CalculateExpectedFailures(double initial_failure_intensity, double ttl_failures, double time)
+    {
+        return ttl_failures * (1 - Math.Pow(Math.E, (-1 * (initial_failure_intensity / ttl_failures) * time)));
+    }
+
 }
