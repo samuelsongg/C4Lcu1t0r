@@ -13,6 +13,7 @@
             string numInput1 = "";
             string numInput2 = "";
             string numInput3 = "";
+            string numInput4 = "";
             double result = 0;
 
             // Ask the user to type the first number.
@@ -45,6 +46,16 @@
                 numInput3 = Console.ReadLine();
             }
 
+            // Ask the user to type the fourth number.
+            Console.Write("Type another number, and then press Enter: ");
+            numInput4 = Console.ReadLine();
+            double cleanNum4 = 0;
+                while (!double.TryParse(numInput4, out cleanNum4))
+            {
+                Console.Write("This is not valid input. Please enter an integer value: ");
+                numInput4 = Console.ReadLine();
+            }
+
             // Ask the user to choose an operator.
             Console.WriteLine("Choose an operator from the following list:");
             Console.WriteLine("\ta - Add");
@@ -60,16 +71,31 @@
             Console.WriteLine("\tavailability - Calculate Availability");
             Console.WriteLine("\tfailureintensity - Calculate Failure Intensity");
             Console.WriteLine("\texpectedfailures - Calculate Expected Failures");
+            Console.WriteLine("\tdefectdensity - Calculate Defect Density");
+            Console.WriteLine("\tmusalog - Calculate Musa Log Reliability");
             Console.Write("Your option? ");
             string op = Console.ReadLine();
             try
             {
-                result = _calculator.DoOperation(cleanNum1, cleanNum2, cleanNum3, op);
-                if (double.IsNaN(result))
+                var operationResult = _calculator.DoOperation(cleanNum1, cleanNum2, cleanNum3, cleanNum4, op);
+
+                if (operationResult is double doubleResult)
                 {
-                    Console.WriteLine("This operation will result in a mathematical error.\n");
+                    // Handle double result
+                    if (double.IsNaN(doubleResult))
+                    {
+                        Console.WriteLine("This operation will result in a mathematical error.\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Your result: {0:0.##}\n", doubleResult);
+                    }
                 }
-                else Console.WriteLine("Your result: {0:0.##}\n", result);
+                else if (operationResult is string stringResult)
+                {
+                    // Handle string result
+                    Console.WriteLine("Your result: {0}\n", stringResult);
+                }
             }
             catch (Exception e)
             {

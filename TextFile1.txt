@@ -1,0 +1,10 @@
+19. As a system quality engineer, I want to customize the command-line calculator to perform system quality metrics, including defect density calculations, shipped source instructions (SSI) updates, and Musa Logarithmic model calculations for failure intensity and expected failures.
+
+20.
+User Story 1: Failure Intensity Using Musa Logarithmic MOdel
+As a system quality engineer, i want to calculate the failure intensity using the Musa logarithmic model so that i can predict failure rates over time.
+
+User Story 2: Expected Failures Calculation
+As a system quality engineer, I want to calculate the expected number of failures using the Musa logarithmic model so that i can forecast system reliability.
+
+

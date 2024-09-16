@@ -1,9 +1,9 @@
 ﻿public class Calculator
 {
     public Calculator() { }
-    public double DoOperation(double num1, double num2, double num3, string op)
+    public object DoOperation(double num1, double num2, double num3, double num4, string op)
     {
-        double result = double.NaN; // Default value
+        object result = double.NaN; // Default value
                                     // Use a switch statement to do the math.
         switch (op)
         {
@@ -46,6 +46,12 @@
                 break;
             case "expectedfailures":
                 result = CalculateExpectedFailures(num1, num2, num3);
+                break;
+            case "defectdensity":
+                result = CalculateDefectDensity(num1, num2);
+                break;
+            case "musalog":
+                result = CalculateMusaLogReliability(num1, num2, num3, num4);
                 break;
             // Return text for an incorrect option entry.
             default:
@@ -190,4 +196,35 @@
         return ttl_failures * (1 - Math.Pow(Math.E, (-1 * (initial_failure_intensity / ttl_failures) * time)));
     }
 
+    // Defect Density = Number of defects / SSI
+    public double CalculateDefectDensity(double defects, double ssi)
+    {
+        if (ssi == 0)
+        {
+            throw new ArgumentException("SSI cannot be zero.");
+        }
+
+        return (double)defects / ssi;
+    }
+
+    // Calculate the failure intensity of a system using Musa Log
+    public double CalculateMusaLogFailureIntensity(double lambda0, double theta, double mu)
+    {
+        return lambda0 * (Math.Pow(Math.E, (-1 * theta * mu)));
+    }
+
+    // Calculate the expected number of failures of a system using Musa Log
+    public double CalculateMusaLogExpectedFailures(double lambda0, double theta, double time)
+    {
+        return (1 / theta) * (Math.Log(lambda0 * theta * time + 1));
+    }
+
+    // Calculate Musa Log reliability and returns failure intensity and expected failures in a string
+    public string CalculateMusaLogReliability(double lambda0, double theta, double mu, double time)
+    {
+        double failureIntensity = CalculateMusaLogFailureIntensity(lambda0, theta, mu);
+        double expectedFailures = CalculateMusaLogExpectedFailures(lambda0, theta, time);
+
+        return $"Failure Intensity: {failureIntensity}, Expected Failures: {expectedFailures}";
+    }
 }
