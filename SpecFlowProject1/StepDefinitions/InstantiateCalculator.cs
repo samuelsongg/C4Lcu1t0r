@@ -3,7 +3,7 @@
 namespace SpecFlowProject1.StepDefinitions
 {
     [Binding]
-    public class CommonSteps
+    public class InstantiateCalculator
     {
         private Calculator _calculator;
 

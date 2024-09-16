@@ -73,9 +73,13 @@
     {
         double result = 1;
 
-        if (num1 == 0 || num1 < 0)
+        if (num1 < 0 || num1 % 1 != 0)
         {
             throw new ArgumentException(String.Format("Error doing factorial."));
+        }
+        else if (num1 == 0)
+        {
+            return 1;
         }
         else
         {

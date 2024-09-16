@@ -7,19 +7,18 @@ namespace SpecFlowCalculatorTests.StepDefinitions
     [Binding]
     public sealed class UsingCalculatorStepDefinitions
     {
-        private readonly CommonSteps _commonSteps;
+        private readonly InstantiateCalculator _calculator;
         private double _result;
 
-        public UsingCalculatorStepDefinitions(CommonSteps commonSteps)
+        public UsingCalculatorStepDefinitions(InstantiateCalculator calculator)
         {
-            _commonSteps = commonSteps;
+            _calculator = calculator;
         }
 
         [When(@"I have entered (.*) and (.*) into the calculator and press add")]
         public void WhenIHaveEnteredAndIntoTheCalculator(double p0, double p1)
         {
-            // Retrieve the calculator from CommonSteps
-            var calculator = _commonSteps.GetCalculator();
+            var calculator = _calculator.GetCalculator();
             _result = calculator.Add(p0, p1);
         }
 

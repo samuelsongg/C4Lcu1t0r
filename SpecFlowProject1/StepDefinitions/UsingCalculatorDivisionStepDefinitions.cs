@@ -6,19 +6,18 @@ namespace SpecFlowProject1.StepDefinitions
     [Binding]
     public class UsingCalculatorDivisionStepDefinitions
     {
-        private readonly CommonSteps _commonSteps;
+        private readonly InstantiateCalculator _calculator;
         private double _result;
 
-        public UsingCalculatorDivisionStepDefinitions(CommonSteps commonSteps)
+        public UsingCalculatorDivisionStepDefinitions(InstantiateCalculator calculator)
         {
-            _commonSteps = commonSteps;
+            _calculator = calculator;
         }
 
         [When(@"I have entered (.*) and (.*) into the calculator")]
         public void WhenIHaveEnteredAndIntoTheCalculator(int p0, int p1)
         {
-            // Retrieve the calculator from CommonSteps
-            var calculator = _commonSteps.GetCalculator();
+            var calculator = _calculator.GetCalculator();
             _result = calculator.Divide(p0, p1);
         }
 
@@ -34,7 +33,7 @@ namespace SpecFlowProject1.StepDefinitions
         [When(@"I have entered (.*) and (.*) into the calculator and press divide")]
         public void WhenIHaveEnteredAndIntoTheCalculatorAndPressDivide(int p0, int p1)
         {
-            var calculator = _commonSteps.GetCalculator();
+            var calculator = _calculator.GetCalculator();
             _result = calculator.Divide(p0, p1);
         }
 
