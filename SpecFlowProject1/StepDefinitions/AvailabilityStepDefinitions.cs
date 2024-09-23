@@ -8,6 +8,7 @@ namespace SpecFlowProject1.StepDefinitions
     {
         private readonly Calculator _calculator;
         private double _result;
+        private Exception _exception;
 
         public AvailabilityStepDefinitions(Calculator calculator)
         {
@@ -17,13 +18,27 @@ namespace SpecFlowProject1.StepDefinitions
         [When(@"I have entered (.*) and (.*) into the calculator and press MTBF")]
         public void WhenIHaveEnteredAndIntoTheCalculatorAndPressMTBF(double mttf, double mttr)
         {
-            _result = _calculator.CalculateMTBF(mttf, mttr);
+            try
+            {
+                _result = _calculator.CalculateMTBF(mttf, mttr);
+            }
+            catch (Exception ex)
+            {
+                _exception = ex;
+            }
         }
 
         [When(@"I have entered (.*) and (.*) into the calculator and press Availability")]
         public void WhenIHaveEnteredAndIntoTheCalculatorAndPressAvailability(double mttf, double mttr)
         {
-            _result = _calculator.CalculateAvailability(mttf, mttr);
+            try
+            {
+                _result = _calculator.CalculateAvailability(mttf, mttr);
+            }
+            catch (Exception ex)
+            {
+                _exception = ex;
+            }
         }
 
         [Then(@"the availability result should be ""(.*)""")]
@@ -36,17 +51,29 @@ namespace SpecFlowProject1.StepDefinitions
             }
             else
             {
-                // Handle cases where MTBF or availability might result in zero due to negative values
-                if (_result < 0)
+                if (_exception == null)
                 {
-                    throw new Exception($"Cannot be below 0.");
+                    Assert.That(_result, Is.EqualTo(double.Parse(expectedResult)));
                 }
                 else
                 {
-                    // Compare as an integer without decimals
-                    Assert.That(((int)_result).ToString(), Is.EqualTo(expectedResult));
+                    Assert.Fail($"Unexpected exception: {_exception.Message}");
                 }
             }
+        }
+
+        [Then(@"a Availability exception should be thrown with the message ""(.*)""")]
+        public void ThenAAvailabilityExceptionShouldBeThrownWithTheMessage(string expectedMessage)
+        {
+            Assert.That(_exception, Is.Not.Null, "Expected an exception, but none was thrown.");
+            Assert.That(_exception.Message, Is.EqualTo(expectedMessage));
+        }
+
+        [Then(@"a MTBF exception should be thrown with the message ""(.*)""")]
+        public void ThenAMTBFExceptionShouldBeThrownWithTheMessage(string expectedMessage)
+        {
+            Assert.That(_exception, Is.Not.Null, "Expected an exception, but none was thrown.");
+            Assert.That(_exception.Message, Is.EqualTo(expectedMessage));
         }
     }
 }

@@ -9,6 +9,13 @@ Scenario: Calculating Musa Log reliability
     When I have entered 5, 6, 0.001, and 0.01 into the calculator and press MusaLogReliability
     Then the Musa Log reliability result should be "Failure Intensity: 4.970089820269676, Expected Failures: 0.043727377411248505"
 
+@MusaModel
+Scenario: Calculating Musa Log reliability with negative parameter
+    Given I have a calculator
+    When I have entered -5, 6, 0.001, and 0.01 into the calculator and press MusaLogReliability
+    Then a MusaLog exception should be thrown with the message "Parameters cannot be negative"
+
+@MusaModel
 Scenario: Calculating Musa Log reliability for another case
 Given I have a calculator
     When I have entered 10, 11, 0.002, and 0.02 into the calculator and press MusaLogReliability

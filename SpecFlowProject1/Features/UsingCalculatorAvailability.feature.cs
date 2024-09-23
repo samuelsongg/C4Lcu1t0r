@@ -278,7 +278,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I have entered -1000 and -100 into the calculator and press MTBF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 34
- testRunner.Then("the availability result should be \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("a MTBF exception should be thrown with the message \"Parameters cannot be negative" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -320,7 +321,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("I have entered -1000 and -100 into the calculator and press Availability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 40
- testRunner.Then("the availability result should be \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("a Availability exception should be thrown with the message \"Parameters cannot be " +
+                        "negative\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

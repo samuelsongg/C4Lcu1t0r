@@ -173,6 +173,11 @@
     // Calculate MTBF (Mean Time Between Failures)
     public double CalculateMTBF(double mttf, double mttr)
     {
+        if (mttf < 0 || mttr < 0)
+        {
+            throw new ArgumentException("Parameters cannot be negative");
+        }
+
         var result = mttf + mttr;
         if (result < 0)
         {
@@ -188,6 +193,11 @@
     // Calculate Availability (Availability = MTTF / (MTTF + MTTR))
     public double CalculateAvailability(double mttf, double mttr)
     {
+        if (mttf < 0 || mttr < 0)
+        {
+            throw new ArgumentException("Parameters cannot be negative");
+        }
+
         double mtbf = CalculateMTBF(mttf, mttr);
         double result = mttf / mtbf;
 
@@ -204,6 +214,11 @@
     // Calculate the current failure intensity (λ(τ))
     public double CalculateFailureIntensity(double initial_failure_intensity, double avg_failures, double ttl_failures)
     {
+        if (initial_failure_intensity < 0 || avg_failures < 0 || ttl_failures < 0)
+        {
+            throw new ArgumentException("Parameters cannot be negative");
+        }
+
         double result = initial_failure_intensity * (1 - (avg_failures / ttl_failures));
 
         if (result < 0)
@@ -214,13 +229,16 @@
         {
             return result;
         }
-
-        // return initial_failure_intensity * (1 - Math.Pow(Math.E, (avg_failures / ttl_failures)));
     }
 
     // Calculate the average number of expected failures (μ(τ))
     public double CalculateExpectedFailures(double initial_failure_intensity, double ttl_failures, double time)
     {
+        if (initial_failure_intensity < 0 || ttl_failures < 0 || time < 0)
+        {
+            throw new ArgumentException("Parameters cannot be negative");
+        }
+
         double result = ttl_failures * (1 - Math.Pow(Math.E, (-1 * (initial_failure_intensity / ttl_failures) * time)));
 
         if (result < 0)
@@ -236,9 +254,14 @@
     // Defect Density = Number of defects / SSI
     public double CalculateDefectDensity(double defects, double ssi)
     {
-        if (ssi < 0)
+        if (ssi < 0 || defects < 0)
         {
-            return 0;
+            throw new ArgumentException(String.Format("Parameters cannot be negative"));
+        }
+
+        if (ssi == 0)
+        {
+            throw new ArgumentException(String.Format("SSI cannot be zero"));
         }
 
         return (double)defects / ssi;
@@ -247,48 +270,37 @@
     // Calculate the failure intensity of a system using Musa Log
     public double CalculateMusaLogFailureIntensity(double lambda0, double theta, double mu)
     {
-        double result = lambda0 * (Math.Pow(Math.E, (-1 * theta * mu)));
+        if (lambda0 < 0 || theta < 0 || mu < 0)
+        {
+            throw new ArgumentException(String.Format("Parameters cannot be negative"));
+        }
 
-        if (result < 0)
-        {
-            return 0;
-        }
-        else
-        {
-            return result;
-        }
+        double result = lambda0 * (Math.Pow(Math.E, (-1 * theta * mu)));
+        return result;
     }
 
     // Calculate the expected number of failures of a system using Musa Log
     public double CalculateMusaLogExpectedFailures(double lambda0, double theta, double time)
     {
-        double result = (1 / theta) * (Math.Log(lambda0 * theta * time + 1));
+        if (lambda0 < 0 || theta < 0 || time < 0)
+        {
+            throw new ArgumentException(String.Format("Parameters cannot be negative"));
+        }
 
-        if (result < 0)
-        {
-            return 0;
-        }
-        else
-        {
-            return result;
-        }
+        double result = (1 / theta) * (Math.Log(lambda0 * theta * time + 1));
+        return result;
     }
 
     // Calculate Musa Log reliability and returns failure intensity and expected failures in a string
     public string CalculateMusaLogReliability(double lambda0, double theta, double mu, double time)
     {
+        if (lambda0 < 0 || theta < 0 || mu < 0 || time < 0)
+        {
+            throw new ArgumentException(String.Format("Parameters cannot be negative"));
+        }
+
         double failureIntensity = CalculateMusaLogFailureIntensity(lambda0, theta, mu);
         double expectedFailures = CalculateMusaLogExpectedFailures(lambda0, theta, time);
-
-        if (failureIntensity < 0)
-        {
-            failureIntensity = 0;
-        }
-
-        if (expectedFailures < 0)
-        {
-            expectedFailures = 0;
-        }
 
         return $"Failure Intensity: {failureIntensity}, Expected Failures: {expectedFailures}";
     }
