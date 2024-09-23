@@ -4,59 +4,16 @@
     {
         bool endApp = false;
         Calculator _calculator = new Calculator();
-        // Display title as the C# console calculator app.
         Console.WriteLine("Console Calculator in C#\r");
         Console.WriteLine("------------------------\n");
+
         while (!endApp)
         {
             // Declare variables and set to empty.
-            string numInput1 = "";
-            string numInput2 = "";
-            string numInput3 = "";
-            string numInput4 = "";
+            double cleanNum1 = 0, cleanNum2 = 0, cleanNum3 = 0, cleanNum4 = 0;
             double result = 0;
 
-            // Ask the user to type the first number.
-            Console.Write("Type a number, and then press Enter: ");
-            numInput1 = Console.ReadLine();
-            double cleanNum1 = 0;
-            while (!double.TryParse(numInput1, out cleanNum1))
-            {
-                Console.Write("This is not valid input. Please enter an integer value: ");
-                numInput1 = Console.ReadLine();
-            }
-
-            // Ask the user to type the second number.
-            Console.Write("Type another number, and then press Enter: ");
-            numInput2 = Console.ReadLine();
-            double cleanNum2 = 0;
-            while (!double.TryParse(numInput2, out cleanNum2))
-            {
-                Console.Write("This is not valid input. Please enter an integer value: ");
-                numInput2 = Console.ReadLine();
-            }
-
-            // Ask the user to type the third number.
-            Console.Write("Type another number, and then press Enter: ");
-            numInput3 = Console.ReadLine();
-            double cleanNum3 = 0;
-            while (!double.TryParse(numInput3, out cleanNum3))
-            {
-                Console.Write("This is not valid input. Please enter an integer value: ");
-                numInput3 = Console.ReadLine();
-            }
-
-            // Ask the user to type the fourth number.
-            Console.Write("Type another number, and then press Enter: ");
-            numInput4 = Console.ReadLine();
-            double cleanNum4 = 0;
-                while (!double.TryParse(numInput4, out cleanNum4))
-            {
-                Console.Write("This is not valid input. Please enter an integer value: ");
-                numInput4 = Console.ReadLine();
-            }
-
-            // Ask the user to choose an operator.
+            // Ask the user to choose an operator first.
             Console.WriteLine("Choose an operator from the following list:");
             Console.WriteLine("\ta - Add");
             Console.WriteLine("\ts - Subtract");
@@ -75,38 +32,95 @@
             Console.WriteLine("\tmusalog - Calculate Musa Log Reliability");
             Console.Write("Your option? ");
             string op = Console.ReadLine();
-            try
-            {
-                var operationResult = _calculator.DoOperation(cleanNum1, cleanNum2, cleanNum3, cleanNum4, op);
 
-                if (operationResult is double doubleResult)
-                {
-                    // Handle double result
-                    if (double.IsNaN(doubleResult))
-                    {
-                        Console.WriteLine("This operation will result in a mathematical error.\n");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Your result: {0:0.##}\n", doubleResult);
-                    }
-                }
-                else if (operationResult is string stringResult)
-                {
-                    // Handle string result
-                    Console.WriteLine("Your result: {0}\n", stringResult);
-                }
-            }
-            catch (Exception e)
+            // Based on the operation, ask for the necessary number of inputs
+            switch (op)
             {
-                Console.WriteLine("Oh no! An exception occurred trying math.\n - Details: " + e.Message);
+                case "a":
+                case "s":
+                case "m":
+                case "d":
+                case "mtbf":
+                case "availability":
+                    // Two numbers required
+                    cleanNum1 = GetNumberFromUser("first");
+                    cleanNum2 = GetNumberFromUser("second");
+                    result = (double)_calculator.DoOperation(cleanNum1, cleanNum2, 0, 0, op);
+                    break;
+
+                case "t":
+                    // Two numbers for Triangle
+                    cleanNum1 = GetNumberFromUser("base length");
+                    cleanNum2 = GetNumberFromUser("height");
+                    result = (double)_calculator.DoOperation(cleanNum1, cleanNum2, 0, 0, op);
+                    break;
+
+                case "c":
+                    // One number for Circle
+                    cleanNum1 = GetNumberFromUser("radius");
+                    result = (double)_calculator.DoOperation(cleanNum1, 0, 0, 0, op);
+                    break;
+
+                case "f":
+                    // One number for Factorial
+                    cleanNum1 = GetNumberFromUser("number");
+                    result = (double)_calculator.DoOperation(cleanNum1, 0, 0, 0, op);
+                    break;
+
+                case "failureintensity":
+                case "expectedfailures":
+                    // Three numbers required
+                    cleanNum1 = GetNumberFromUser("initial failure intensity");
+                    cleanNum2 = GetNumberFromUser("average failures");
+                    cleanNum3 = GetNumberFromUser("total failures");
+                    result = (double)_calculator.DoOperation(cleanNum1, cleanNum2, cleanNum3, 0, op);
+                    break;
+
+                case "defectdensity":
+                    // Two numbers for defect density
+                    cleanNum1 = GetNumberFromUser("number of defects");
+                    cleanNum2 = GetNumberFromUser("SSI");
+                    result = (double)_calculator.DoOperation(cleanNum1, cleanNum2, 0, 0, op);
+                    break;
+
+                case "musalog":
+                    // Four numbers required
+                    cleanNum1 = GetNumberFromUser("lambda0");
+                    cleanNum2 = GetNumberFromUser("theta");
+                    cleanNum3 = GetNumberFromUser("mu");
+                    cleanNum4 = GetNumberFromUser("time");
+                    var reliabilityResult = _calculator.DoOperation(cleanNum1, cleanNum2, cleanNum3, cleanNum4, op);
+                    Console.WriteLine($"Your result: {reliabilityResult}\n");
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid operation.");
+                    break;
             }
+
+            if (!double.IsNaN(result))
+            {
+                Console.WriteLine("Your result: {0:0.##}\n", result);
+            }
+
             Console.WriteLine("------------------------\n");
-            // Wait for the user to respond before closing.
             Console.Write("Press 'q' and Enter to quit the app, or press any other key and Enter to continue: ");
             if (Console.ReadLine() == "q") endApp = true;
-            Console.WriteLine("\n"); // Friendly linespacing.
+            Console.WriteLine("\n");
         }
-        return;
+    }
+
+    private static double GetNumberFromUser(string prompt)
+    {
+        string input;
+        double number;
+        Console.Write($"Type the {prompt} number, and then press Enter: ");
+        input = Console.ReadLine();
+        while (!double.TryParse(input, out number))
+        {
+            Console.Write($"This is not valid input. Please enter a valid number for {prompt}: ");
+            input = Console.ReadLine();
+        }
+        return number;
     }
 }

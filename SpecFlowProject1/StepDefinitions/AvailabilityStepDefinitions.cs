@@ -36,8 +36,16 @@ namespace SpecFlowProject1.StepDefinitions
             }
             else
             {
-                // Compare as an integer without decimals
-                Assert.That(((int)_result).ToString(), Is.EqualTo(expectedResult));
+                // Handle cases where MTBF or availability might result in zero due to negative values
+                if (_result < 0)
+                {
+                    throw new Exception($"Cannot be below 0.");
+                }
+                else
+                {
+                    // Compare as an integer without decimals
+                    Assert.That(((int)_result).ToString(), Is.EqualTo(expectedResult));
+                }
             }
         }
     }

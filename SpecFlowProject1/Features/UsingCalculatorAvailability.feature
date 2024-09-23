@@ -26,3 +26,15 @@ Scenario: Calculating Availability with different values
     Given I have a calculator
     When I have entered 2000 and 200 into the calculator and press Availability
     Then the availability result should be "0.909"
+
+@Availability
+Scenario: Calculating MTBF with negative values
+	Given I have a calculator
+	When I have entered -1000 and -100 into the calculator and press MTBF
+	Then the availability result should be "0"
+
+@Availability
+Scenario: Calculating Availability with negative values
+	Given I have a calculator
+	When I have entered -1000 and -100 into the calculator and press Availability
+	Then the availability result should be "0"

@@ -173,35 +173,72 @@
     // Calculate MTBF (Mean Time Between Failures)
     public double CalculateMTBF(double mttf, double mttr)
     {
-        return mttf + mttr;
+        var result = mttf + mttr;
+        if (result < 0)
+        {
+            result = 0;
+            return result;
+        }
+        else
+        {
+            return result;
+        }
     }
 
     // Calculate Availability (Availability = MTTF / (MTTF + MTTR))
     public double CalculateAvailability(double mttf, double mttr)
     {
         double mtbf = CalculateMTBF(mttf, mttr);
-        return mttf / mtbf;
+        double result = mttf / mtbf;
+
+        if (result < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return result;
+        }
     }
 
     // Calculate the current failure intensity (λ(τ))
     public double CalculateFailureIntensity(double initial_failure_intensity, double avg_failures, double ttl_failures)
     {
-        return initial_failure_intensity * (1 - (avg_failures / ttl_failures));
-        return initial_failure_intensity * (1 - Math.Pow(Math.E, (avg_failures / ttl_failures)));
+        double result = initial_failure_intensity * (1 - (avg_failures / ttl_failures));
+
+        if (result < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return result;
+        }
+
+        // return initial_failure_intensity * (1 - Math.Pow(Math.E, (avg_failures / ttl_failures)));
     }
 
     // Calculate the average number of expected failures (μ(τ))
     public double CalculateExpectedFailures(double initial_failure_intensity, double ttl_failures, double time)
     {
-        return ttl_failures * (1 - Math.Pow(Math.E, (-1 * (initial_failure_intensity / ttl_failures) * time)));
+        double result = ttl_failures * (1 - Math.Pow(Math.E, (-1 * (initial_failure_intensity / ttl_failures) * time)));
+
+        if (result < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return result;
+        }
     }
 
     // Defect Density = Number of defects / SSI
     public double CalculateDefectDensity(double defects, double ssi)
     {
-        if (ssi == 0)
+        if (ssi < 0)
         {
-            throw new ArgumentException("SSI cannot be zero.");
+            return 0;
         }
 
         return (double)defects / ssi;
@@ -210,13 +247,31 @@
     // Calculate the failure intensity of a system using Musa Log
     public double CalculateMusaLogFailureIntensity(double lambda0, double theta, double mu)
     {
-        return lambda0 * (Math.Pow(Math.E, (-1 * theta * mu)));
+        double result = lambda0 * (Math.Pow(Math.E, (-1 * theta * mu)));
+
+        if (result < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return result;
+        }
     }
 
     // Calculate the expected number of failures of a system using Musa Log
     public double CalculateMusaLogExpectedFailures(double lambda0, double theta, double time)
     {
-        return (1 / theta) * (Math.Log(lambda0 * theta * time + 1));
+        double result = (1 / theta) * (Math.Log(lambda0 * theta * time + 1));
+
+        if (result < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return result;
+        }
     }
 
     // Calculate Musa Log reliability and returns failure intensity and expected failures in a string
@@ -224,6 +279,16 @@
     {
         double failureIntensity = CalculateMusaLogFailureIntensity(lambda0, theta, mu);
         double expectedFailures = CalculateMusaLogExpectedFailures(lambda0, theta, time);
+
+        if (failureIntensity < 0)
+        {
+            failureIntensity = 0;
+        }
+
+        if (expectedFailures < 0)
+        {
+            expectedFailures = 0;
+        }
 
         return $"Failure Intensity: {failureIntensity}, Expected Failures: {expectedFailures}";
     }
