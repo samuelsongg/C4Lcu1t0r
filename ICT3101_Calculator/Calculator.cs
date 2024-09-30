@@ -320,9 +320,7 @@ public class Calculator
         double result = 0;
         int choice = Convert.ToInt16(input);
 
-        // FileReader getTheMagic = new FileReader();
-
-        string[] magicStrings = fileReader.Read("C:\\Users\\Samuel\\Projects\\ICT3101_Calculator\\MagicNumbers.txt");
+        string[] magicStrings = fileReader.Read("MagicNumbers.txt");
         
         if ((choice >= 0) && (choice < magicStrings.Length))
         {

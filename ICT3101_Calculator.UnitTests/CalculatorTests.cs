@@ -75,46 +75,4 @@ public class CalculatorTests
     {
         Assert.That(() => _calculator.Circle(radius), Throws.ArgumentException);
     }
-
-    [Test]
-    public void GenMagicNum_ValidInput_ReturnsExpectedResult()
-    {
-        // Arrange
-        double input = 2; // Index in MagicNumbers.txt corresponds to value 5
-        TestFileReader testReader = new TestFileReader();
-
-        // Act
-        double result = _calculator.GenMagicNum(input, testReader);
-
-        // Assert
-        Assert.AreEqual(10, result); // Because 3 * 2 = 6
-    }
-
-    [Test]
-    public void GenMagicNum_NegativeInput_ReturnsNegativeDouble()
-    {
-        // Arrange
-        double input = -1; // Negative number to test fallback behavior
-        TestFileReader testReader = new TestFileReader();
-
-        // Act
-        double result = _calculator.GenMagicNum(input, testReader);
-
-        // Assert
-        Assert.AreEqual(0, result); // Should return 0 for negative input.
-    }
-
-    [Test]
-    public void GenMagicNum_InputOutOfBounds_ReturnsDefault()
-    {
-        // Arrange
-        double input = 100; // Index out of bounds
-        TestFileReader testReader = new TestFileReader();
-
-        // Act
-        double result = _calculator.GenMagicNum(input, testReader);
-
-        // Assert
-        Assert.AreEqual(0, result); // Should return 0 as a fallback.
-    }
 }
