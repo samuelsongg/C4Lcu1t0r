@@ -1,0 +1,39 @@
+# This workflow will build and test a .NET project
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        working-directory: ./Solution_Items/
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: NUnit Tests
+      working-directory: ICT3101_Calculator.UnitTests/
+      run: dotnet test --no-build --verbosity normal
+
+    - name: SpecFlow Tests
+      working-directory: SpecFlowProject1/
+      run: dotnet test --no-build --verbosity normal
