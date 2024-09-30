@@ -14,7 +14,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./Solution_Items/
+        working-directory: ./
 
     steps:
     - uses: actions/checkout@v4
