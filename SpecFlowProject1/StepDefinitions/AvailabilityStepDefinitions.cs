@@ -6,11 +6,11 @@ namespace SpecFlowProject1.StepDefinitions
     [Binding]
     public class AvailabilityStepDefinitions
     {
-        private readonly Calculator _calculator;
+        private readonly InstantiateCalculator _calculator;
         private double _result;
         private Exception _exception;
 
-        public AvailabilityStepDefinitions(Calculator calculator)
+        public AvailabilityStepDefinitions(InstantiateCalculator calculator)
         {
             _calculator = calculator;
         }
@@ -18,9 +18,10 @@ namespace SpecFlowProject1.StepDefinitions
         [When(@"I have entered (.*) and (.*) into the calculator and press MTBF")]
         public void WhenIHaveEnteredAndIntoTheCalculatorAndPressMTBF(double mttf, double mttr)
         {
+            var calculator = _calculator.GetCalculator();
             try
             {
-                _result = _calculator.CalculateMTBF(mttf, mttr);
+                _result = calculator.CalculateMTBF(mttf, mttr);
             }
             catch (Exception ex)
             {
@@ -31,9 +32,10 @@ namespace SpecFlowProject1.StepDefinitions
         [When(@"I have entered (.*) and (.*) into the calculator and press Availability")]
         public void WhenIHaveEnteredAndIntoTheCalculatorAndPressAvailability(double mttf, double mttr)
         {
+            var calculator = _calculator.GetCalculator();
             try
             {
-                _result = _calculator.CalculateAvailability(mttf, mttr);
+                _result = calculator.CalculateAvailability(mttf, mttr);
             }
             catch (Exception ex)
             {

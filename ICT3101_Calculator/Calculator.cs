@@ -1,6 +1,16 @@
-﻿public class Calculator
+﻿using ICT3101_Calculator;
+
+public class Calculator
 {
+    private readonly IFileReader _fileReader;
+
+    public Calculator(IFileReader fileReader)
+    {
+        _fileReader = fileReader;
+    }
+
     public Calculator() { }
+
     public object DoOperation(double num1, double num2, double num3, double num4, string op)
     {
         object result = double.NaN; // Default value
@@ -303,5 +313,31 @@
         double expectedFailures = CalculateMusaLogExpectedFailures(lambda0, theta, time);
 
         return $"Failure Intensity: {failureIntensity}, Expected Failures: {expectedFailures}";
+    }
+
+    public double GenMagicNum(double input, IFileReader fileReader)
+    {
+        double result = 0;
+        int choice = Convert.ToInt16(input);
+
+        // FileReader getTheMagic = new FileReader();
+
+        string[] magicStrings = fileReader.Read("C:\\Users\\Samuel\\Projects\\ICT3101_Calculator\\MagicNumbers.txt");
+        
+        if ((choice >= 0) && (choice < magicStrings.Length))
+        {
+            result = Convert.ToDouble(magicStrings[choice]);
+        }
+        
+        result = (result > 0) ? (2 * result) : (-2 * result);
+        return result;
+    }
+}
+
+public class FileReader : IFileReader
+{
+    public string[] Read(string path)
+    {
+        return File.ReadAllLines(path);
     }
 }

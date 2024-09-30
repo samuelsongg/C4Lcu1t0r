@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution_Items", "Solution_Items", "{096FA160-4395-47FB-8A61-19BFD7C30F76}"
 	ProjectSection(SolutionItems) = preProject
 		dotnet-desktop.yml = dotnet-desktop.yml
+		MagicNumbers.txt = MagicNumbers.txt
 		TextFile1.txt = TextFile1.txt
 	EndProjectSection
 EndProject
